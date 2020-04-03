@@ -252,7 +252,7 @@ bool test_empty(unsigned int position, char array[])
 
 int main(){
     char block = get_block()
-	char slot[21];
+	char slot[20];
 	//Put the first block from the chute INTO SLOT 10(hardware restriction)
 	put_block(block, 10, slot);
 	unsigned int counter = 1;
