@@ -259,6 +259,17 @@ int main(){
 	bool checker = True;
 	while(checker){
 		//Madison's Part
+        for(int i = 0; i < 20; i++){
+            if((!(test_empty(i,slot))) && (i != 20)){
+                block = switch_blocks(block,i,slot);
+                put_block(block,i+1,slot);
+                block = NULL;
+
+            }
+            else if(i == 20){
+                break;
+            }
+        }
 		
 		
 		//Rishi's Part
