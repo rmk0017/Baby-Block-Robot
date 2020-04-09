@@ -252,12 +252,16 @@ bool test_empty(unsigned int position, char array[])
 
 int main(){
 	char block = get_block()
-	char slot[21];
+	char slot[20];
 	//Put the first block from the chute INTO SLOT 10(hardware restriction)
 	put_block(block, 10, slot);
 	unsigned int counter = 1;
 	bool checker = True;
 	while(checker){
+		cout << "Please enter another Block: "
+		inblock = get_block();
+		
+		
 		//Madison's Part
         for(int i = 0; i < 20; i++){
             if((!(test_empty(i,slot))) && (i != 20)){
@@ -273,9 +277,100 @@ int main(){
 		
 		
 		//Rishi's Part
+		unsigned int index = 11, index2 = 11,right_counter = 0, left_counter = 0;
+		bool check_if = false;
+		int fill_count;
+		fill_count = 10 - right_counter;
+		char in_slot;
+		bool debug = true;
+		int dummy_count = -1;
+		cout << "Please enter another Block: "
+		inblock = get_block();
+		check_if = robot_ltoreq_slot(inblock, block);
+		if(!check_if){
+			//Rishi::::::
+			//We consider blocks that are greater than the block in slot 10
+			//False should be returned
+			
+			if (test_empty(19, slot)){//if statement to check if slot 20 is empty
+				
+				while(index < 20){
+					if(test_empty(index, slot)){//We now count the number of empty slots on the right side.
+						right_counter++;
+					}
+					if(test_empty(index-11, slot)){//Counting the number of empty slots on the left side
+						left_counter++;
+					}
+				index++;
+				}
+				
+				if(left_counter > right_counter){//Move every block from slot 10 to the left by 1 using shift_block and place the input block in slot 10 using put_block
+					to_left(slot);
+					put_block(inblock, 10, slot);
+				}
+				else{//this means that the right_counter > left_counter, allowing us to target the right side 
+					int position = 11;
+					while(slot[position] != ' '){  //substitute for whitespace
+					in_slot = slot[position - 1];
+					debug = robot_ltoreq_slot(inblock, in_slot);
+						if(debug == true){//Less than or equal to block
+							while(dummy_count != fill_count){
+							inblock = switch_blocks(inblock, position - 1, slot);
+							//switch_blocks(block, position, slot);
+							//print_slots(slot);
+							shift_right(position++);
+							dummy_count++;	
+						}	
+						break;
+			
+						position++;
+			                                   // Input: 1 2 3 4 5 6 7 8 9 0 p r r s t u v 1 1 1
+						}
+						position++;
+					}			
+				}
+			}
+			
 		
+			else if(test_empty(0, slot)){//this part of the program is implemented if slot number 0 is empty:::
+				while(index2 < 20){
+					if(test_empty(index2, slot)){//We now count the number of empty slots on the right side.
+						right_counter++;
+					}
+					if(test_empty(index2-11, slot)){//Counting the number of empty slots on the left side
+						left_counter++;
+					}
+				index2++;
+				}
+				unsigned int dummyvar = -1;
+				int position = 10;
+				while(dummyvar != (10-left_counter)){
+						inblock = switch_blocks(inblock, position - 1, slot);
+						//switch_blocks(block, position, slot);
+						print_slots(slot);
+						shift_left(position);
+						position--;			
+						dummyvar++;
+				}
+					
+			
+			}		
+			else{
+				cout << "Error: More than 20 blocks have been inputted" << endl;
+				break;
+			}
 		
+			
 		}
+		
+		
+	}
+		
+}
+	
+		
+		
+	}
 	
 
 
