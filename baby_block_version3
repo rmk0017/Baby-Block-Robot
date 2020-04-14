@@ -1,4 +1,4 @@
-include <fstream>
+#include <fstream>
 #include <iomanip>
 #include <string>
 #include <algorithm>
@@ -6,6 +6,7 @@ include <fstream>
 #include <iostream>
 
 using namespace std;
+char slot[20];
 
 char get_block(void)
 {
@@ -244,40 +245,64 @@ bool test_empty(unsigned int position, char array[])
     }
 
 }
+char shift_all_left(char array[],int position, char block){
+    int i = position;
+    char temp_block = block;
+    block = NULL;
+    while(i > 0){
+        block = switch_blocks(block,i,array);
+        shift_left(i);
+        i--;
+    }
+    return temp_block;
+}
 
+char shift_all_right(char array[],int position, char block){
+    int i = position;
+    char temp_block = block;
+    block = NULL;
+    while(i < 19){
+        block = switch_blocks(block,i,array);
+        shift_right(i);
+        i++;
+    }
+    return temp_block;
+}
 
 int main() {
     char block = get_block();
-    char slot[20];
+    char temp_block = ' ';
+    char array = *slot;
     for (int i = 0; i < 20; i++) {
         slot[i] = NULL;
     }
-    int array_size;
-    int position;
-    char robot;
     int counter = 0;
-    int dummy;
-    int filled_right;
-    bool swapped = false;
-    int block_counter = 0;
-    int switch_counter = 0;
+
     //Put the first block from the chute INTO SLOT 10(hardware restriction)
     put_block(block, 10, slot);
     do {
         block = get_block();
-        if (block > slot[10]) {
-            for(int i = 9; i < sizeof(slot); i ++){
-                if((block > slot[i]) || i == 19){
-                    shift_all_left(slot);
+        if (block < slot[10] || block == slot[10]) {
+            for(int i = 10; i > 0; i --){
+                if((block > slot[i])){
+                    shift_all_left(slot,i,block);
                     put_block(block,i,slot);
                     break;
                 }
             }
         }
-        if (block <= slot[10]) {
-            for(int i = 10; i > 0; i --){
-                if((block >= slot[i]) || i == 0){
-                    shift_all_right(slot);
+        if (block > slot[10]) {
+            if(test_empty(11,slot)){
+                put_block(block,11,slot);
+                continue;
+            }
+            for(int i = 10; i <= 19; i++){
+                if((block > slot[i-1]) && (slot[i] == NULL)){
+                    put_block(block,i,slot);
+                    break;
+                }
+                if((block <= slot[i])){
+                    shift_all_right(slot,i, block);
                     put_block(block,i,slot);
                     break;
                 }
