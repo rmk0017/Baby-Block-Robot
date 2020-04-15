@@ -296,7 +296,7 @@ int main() {
         if (counter == 0){
             put_block(block,10,slot);
         }
-        if (block < slot[10] || block == slot[10]) { // This section of the code handles if the block is less than the block in the middle
+        if (block < slot[10] || block == slot[10] && counter !=0) { // This section of the code handles if the block is less than the block in the middle
             for(int i = 10; i >= 0; i --) {
                 if ((block > slot[i])) {
                     shift_all_left(slot, i, block);
@@ -320,7 +320,7 @@ int main() {
             }
         }
 
-        if (block > slot[10]) { //This section of the code handles if the block is greater than the block in the middle
+        if (block > slot[10] && counter !=0) { //This section of the code handles if the block is greater than the block in the middle
             for(int i = 10; i <= 19; i++){
                 if((block <= slot[i]) &&(block > slot[i-1])){
                     shift_all_right(slot,i, block);
